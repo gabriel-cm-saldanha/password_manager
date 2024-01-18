@@ -41,18 +41,22 @@ def save_data():
         is_ok = messagebox.askokcancel(title=website,
                                        message=f"These are the details entered: \nLogin: {login}\n password: {password}\n Is it ok to save?")
         if is_ok:
+            with open("data.json", "r") as data_file:
+                data = json.load(data_file)
+                data.update(new_data)
             with open("data.json", "w") as data_file:
-                json.dump(new_data, data_file, indent=4)
+                json.dump(data, data_file, indent=4)
+
             website_entry.delete(0, END)
             password_entry.delete(0, END)
 
 # --------------------------- SEARCH DATA ----------------------------- #
 def search_info():
     website = website_entry.get()
-    with open('data.json','r') as data_file:
+    with open('data.json', 'r') as data_file:
         data = json.load(data_file)
         for site in data:
-            print(data[site])
+            messagebox.showinfo(message=data[site])
 
 
 # ---------------------------- UI SETUP ------------------------------- #
