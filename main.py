@@ -25,7 +25,7 @@ def generate_password():
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 def save_data():
-    website = website_entry.get()
+    website = website_entry.get().lower()
     login = login_entry.get()
     password = password_entry.get()
 
@@ -42,26 +42,34 @@ def save_data():
         is_ok = messagebox.askokcancel(title=website,
                                        message=f"These are the details entered: \nLogin: {login}\n password: {password}\n Is it ok to save?")
         if is_ok:
-            with open("data.json", "r") as data_file:
-                data = json.load(data_file)
+            try:
+                with open("data.json", "r") as data_file:
+                    data = json.load(data_file)
+            except FileNotFoundError:
+                with open("data.json", "w") as data_file:
+                    json.dump(data, data_file, indent=4)
+            else:
                 data.update(new_data)
-            with open("data.json", "w") as data_file:
-                json.dump(data, data_file, indent=4)
+                with open("data.json", "w") as data_file:
+                    json.dump(data, data_file, indent=4)
+            finally:
+                website_entry.delete(0, END)
+                password_entry.delete(0, END)
 
-            website_entry.delete(0, END)
-            password_entry.delete(0, END)
-
-# --------------------------- SEARCH DATA ----------------------------- #
+# --------------------------- SEARCH INFO ----------------------------- #
 def search_info():
-    website = website_entry.get()
-    with open('data.json', 'r') as data_file:
-        data = json.load(data_file)
-        for site in data:
-            messagebox.showinfo(message=data[site])
-            with open("data.txt", "a") as file:
-                file.write(f"\n{website} | {login} | {password}")
-            website_entry.delete(0, END)
-            password_entry.delete(0, END)
+    website = website_entry.get().lower()
+    try:
+        with open('data.json', 'r') as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message='No Data File Found')
+    else:
+        if website in data:
+            messagebox.showinfo(title=website,
+                                message=f"login: {data[website]['login']} \npassword: {data[website]['password']}")
+        else:
+            messagebox.showinfo(title="Error", message=f"Sorry, we didn't find any details for {website}")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -85,7 +93,6 @@ website_entry.focus()
 # Login
 login_label = Label(text='Login:', font=("Arial", 10, "bold"))
 login_label.grid(column=0, row=2)
-
 login_entry = Entry(width=45)
 login_entry.grid(column=1, row=2, columnspan=2, sticky='EW')
 login_entry.insert(0, "user@email.com")
@@ -94,7 +101,6 @@ login_entry.insert(0, "user@email.com")
 # Password
 password_label = Label(text="Password:", font=("Arial", 10, "bold"))
 password_label.grid(column=0, row=3)
-
 password_entry = Entry(width=22)
 password_entry.grid(column=1, row=3, sticky='EW')
 
