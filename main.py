@@ -1,8 +1,11 @@
 from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
+<<<<<<< HEAD
 import pyperclip
 import json
+=======
+>>>>>>> cf0b3c8c309f5afce61f1878df1c77d956a1e9fb
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -18,7 +21,10 @@ def generate_password():
 
     password = "".join(password_list)
     password_entry.insert(0, password)
+<<<<<<< HEAD
     pyperclip.copy(password)
+=======
+>>>>>>> cf0b3c8c309f5afce61f1878df1c77d956a1e9fb
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
@@ -28,6 +34,7 @@ def save_data():
     login = login_entry.get()
     password = password_entry.get()
 
+<<<<<<< HEAD
     new_data = {
         website:{
             "login":login,
@@ -35,12 +42,15 @@ def save_data():
             }
     }
 
+=======
+>>>>>>> cf0b3c8c309f5afce61f1878df1c77d956a1e9fb
     if len(website.strip()) == 0 or len(password.strip()) == 0:
         messagebox.showinfo(title="Ooopsss", message="Sorry But you missed a blank field")
     else:
         is_ok = messagebox.askokcancel(title=website,
                                        message=f"These are the details entered: \nLogin: {login}\n password: {password}\n Is it ok to save?")
         if is_ok:
+<<<<<<< HEAD
             with open("data.json", "r") as data_file:
                 data = json.load(data_file)
                 data.update(new_data)
@@ -57,6 +67,13 @@ def search_info():
         data = json.load(data_file)
         for site in data:
             messagebox.showinfo(message=data[site])
+=======
+            with open("data.txt", "a") as file:
+                file.write(f"\n{website} | {login} | {password}")
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
+
+>>>>>>> cf0b3c8c309f5afce61f1878df1c77d956a1e9fb
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -73,7 +90,11 @@ canvas.grid(column=1, row=0)
 website_label = Label(text="Website:", font=("Arial", 10, "bold"))
 website_label.grid(column=0, row=1)
 
+<<<<<<< HEAD
 website_entry = Entry(width=20)
+=======
+website_entry = Entry(width=45)
+>>>>>>> cf0b3c8c309f5afce61f1878df1c77d956a1e9fb
 website_entry.grid(column=1, row=1, columnspan=2, sticky='EW')
 website_entry.focus()
 
@@ -96,9 +117,12 @@ password_entry.grid(column=1, row=3, sticky='EW')
 
 
 # Buttons
+<<<<<<< HEAD
 search_button = Button(text="Search", width=15, command=search_info)
 search_button.grid(column=2, row=1)
 
+=======
+>>>>>>> cf0b3c8c309f5afce61f1878df1c77d956a1e9fb
 generate_button = Button(text="Generate Password", command=generate_password)
 generate_button.grid(column=2, row=3)
 
